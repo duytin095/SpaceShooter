@@ -6,6 +6,8 @@ public class Player : MonoBehaviour
 {
     [SerializeField]
     private float _speed = 3.5f;
+    [SerializeField]
+    private Transform _laserPrefabs;
     void Start()
     {
         transform.position = Vector3.zero;
@@ -15,6 +17,11 @@ public class Player : MonoBehaviour
     void Update()
     {
         CalculateMovement();
+
+        if (Input.GetKeyDown(KeyCode.Space))
+        {
+            Instantiate(_laserPrefabs, transform.position, Quaternion.identity);
+        }
     }
 
     void CalculateMovement()
