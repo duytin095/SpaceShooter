@@ -14,9 +14,32 @@ public class Player : MonoBehaviour
 
     void Update()
     {
+        CalculateMovement();
+    }
+
+    void CalculateMovement()
+    {
+        float rightPosBound = 11.2f;
+        float leftPosBound = -11.2f;
+        float topPosBound = 0;
+        float botPosBound = -3.9f;
+        float currentPosX = transform.position.x;
+        float currentPosY = transform.position.y;
         float horizontalInput = Input.GetAxis("Horizontal");
         float verticalInput = Input.GetAxis("Vertical");
-        transform.Translate(Vector3.right * horizontalInput * _speed * Time.deltaTime);
-        transform.Translate(Vector3.up * verticalInput * _speed * Time.deltaTime);
+        Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
+
+        transform.Translate(_speed * Time.deltaTime * direction);
+
+        transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, botPosBound, topPosBound), 0);
+
+        if (currentPosX > rightPosBound)
+        {
+            transform.position = new Vector3(leftPosBound, currentPosY, 0);
+        }
+        else if (currentPosX < leftPosBound)
+        {
+            transform.position = new Vector3(rightPosBound, currentPosY, 0);
+        }
     }
 }
