@@ -65,7 +65,7 @@ public class Player : MonoBehaviour
 
     void FireLaser()
     {
-        float offSet = 0.8f;
+        float offSet = 1.05f;
         Vector3 laserSpawnPos =
             new Vector3(transform.position.x, transform.position.y + offSet, transform.position.z);
 
