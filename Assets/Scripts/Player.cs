@@ -7,14 +7,17 @@ public class Player : MonoBehaviour
     [SerializeField]
     private float _speed = 3.5f;
     [SerializeField]
-    private Transform _laserPrefabs;
+    private Transform _laserPrefab;
     [SerializeField]
     private float _fireRate = 0.5f;
     private float _canFire = -1f;
     [SerializeField]
     private int _lives = 3;
-    [SerializeField]
     private SpawnManager _spawnManager;
+    [SerializeField]
+    private bool _isTripleShotActive = false;
+    [SerializeField]
+    private Transform _tripleLaserPrefab;
     void Start()
     {
         transform.position = Vector3.zero;
@@ -70,7 +73,15 @@ public class Player : MonoBehaviour
             new Vector3(transform.position.x, transform.position.y + offSet, transform.position.z);
 
         _canFire = Time.time + _fireRate;
-        Instantiate(_laserPrefabs, laserSpawnPos, Quaternion.identity);
+
+        if (_isTripleShotActive)
+        {
+            Instantiate(_tripleLaserPrefab, transform.position, Quaternion.identity);
+        }
+        else
+        {
+            Instantiate(_laserPrefab, laserSpawnPos, Quaternion.identity);
+        }
     }
     public void Damage()
     {
