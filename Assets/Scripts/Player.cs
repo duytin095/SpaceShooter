@@ -19,6 +19,9 @@ public class Player : MonoBehaviour
     private bool _isTripleShotActive = false;
     [SerializeField]
     private Transform _tripleLaserPrefab;
+
+    private bool _isShieldActive = false;
+    [SerializeField] GameObject _shieldPrefab;
     void Start()
     {
         transform.position = Vector3.zero;
@@ -86,6 +89,13 @@ public class Player : MonoBehaviour
     }
     public void Damage()
     {
+        if (_isShieldActive)
+        {
+            _isShieldActive = false;
+            _shieldPrefab.SetActive(false);
+            return;
+        }
+
         _lives--;
 
         if (_lives < 1)
@@ -116,4 +126,12 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(5.0f);
         _speed /= _speedMultiplier;
     }
+
+    public void ActiveShield()
+    {
+        _isShieldActive = true;
+        _shieldPrefab.SetActive(true);
+    }
+
+ 
 }
