@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
+    private GameManager _gameManager;
     [SerializeField]
     private Text _scoreText;
     [SerializeField]
@@ -12,14 +13,19 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Text _gameOverText;
     [SerializeField]
+    private Text _restartText;
+    [SerializeField]
     private Sprite[] _liveSprites;
     void Start()
     {
         _scoreText.text = "Score: " + 0;
         _gameOverText.gameObject.SetActive(false);
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+
+        if (_gameManager == null)
+            Debug.LogError("GameManager is NULL");
     }
 
-    // Update is called once per frame
     void Update()
     {
         
@@ -35,6 +41,13 @@ public class UIManager : MonoBehaviour
         _liveImage.sprite = _liveSprites[currentLive];
 
         if(currentLive == 0)
-            _gameOverText.gameObject.SetActive(true);
+            GameOverSequence();
+    }
+
+    void GameOverSequence()
+    {
+        _gameManager.RestartGame();
+        _gameOverText.gameObject.SetActive(true);
+        _restartText.gameObject.SetActive(true);
     }
 }
