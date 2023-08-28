@@ -15,19 +15,30 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private Player _player;
 
-    void Update()
+    private Animator _anim;
+
+    private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
-        transform.Translate(_speed * Time.deltaTime * Vector3.down);  
-        
+        _anim = GetComponent<Animator>();
+
+        if (_player == null)
+        {
+            Debug.LogError("Player Componmet is NULL");
+        }
+        if (_anim == null)
+        {
+            Debug.LogError("Animator is NULL");
+        }
+    }
+
+    private void Update()
+    {
+        transform.Translate(_speed * Time.deltaTime * Vector3.down);
         float randomX = Random.Range(-_randomRange, _randomRange);
         if (transform.position.y < _endYPos)
         {
             transform.position = new Vector3(randomX, _startYPos, transform.position.z);
-        }
-        if(_player == null)
-        {
-            Debug.LogError("Player Componmet is NULL");
         }
     }
 
@@ -37,7 +48,9 @@ public class Enemy : MonoBehaviour
         {
             Destroy(other.gameObject);
             _player.AddScore(10);
-            Destroy(this.gameObject);
+            _speed = 0;
+            _anim.SetTrigger("onEnemyDestroyed");
+            Destroy(this.gameObject, 2.4f);
         }else if (other.CompareTag("Player"))
         {
             Player player = other.transform.GetComponent<Player>();
@@ -45,8 +58,9 @@ public class Enemy : MonoBehaviour
             {
                 player.Damage();
             }
-
-            Destroy(this.gameObject);
+            _speed = 0;
+            _anim.SetTrigger("onEnemyDestroyed");
+            Destroy(this.gameObject, 2.4f);
         }
     }
 }

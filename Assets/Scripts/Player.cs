@@ -51,7 +51,7 @@ public class Player : MonoBehaviour
     {
         CalculateMovement();
 
-        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire)
+        if (Input.GetKeyDown(KeyCode.Space) && Time.time > _canFire )
         {
             FireLaser();
         }
@@ -115,7 +115,8 @@ public class Player : MonoBehaviour
         if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
-            Destroy(this.gameObject);
+            transform.gameObject.SetActive(false);
+            //Destroy(this.gameObject);
         }
     }
 
