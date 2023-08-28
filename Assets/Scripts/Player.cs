@@ -64,7 +64,7 @@ public class Player : MonoBehaviour
     {
         float rightPosBound = 11.2f;
         float leftPosBound = -11.2f;
-        float topPosBound = 0;
+        float topPosBound = 1;
         float botPosBound = -3.9f;
         float currentPosX = transform.position.x;
         float currentPosY = transform.position.y;
