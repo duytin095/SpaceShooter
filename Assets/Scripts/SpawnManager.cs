@@ -7,16 +7,19 @@ public class SpawnManager : MonoBehaviour
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] GameObject[] powerups;
-    private bool _isSpawning = true;
-    void Start()
+    private bool _isSpawning = false;
+
+    public void StartSpawning()
     {
+        _isSpawning = true;
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRountine());
     }
 
     IEnumerator SpawnEnemyRoutine()
     {
-        while (_isSpawning == true)
+        yield return new WaitForSeconds(2.5f);
+        while (_isSpawning)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             GameObject newEnemy = Instantiate(_enemyPrefab, posToSpawn, Quaternion.identity);
@@ -27,7 +30,8 @@ public class SpawnManager : MonoBehaviour
 
     IEnumerator SpawnPowerupRountine()
     {
-        while (_isSpawning == true)
+        yield return new WaitForSeconds(3.5f);
+        while (_isSpawning)
         {
             Vector3 posToSpawn = new Vector3(Random.Range(-9, 9), 7, 0);
             int randomPowerup = Random.Range(0, 3);
@@ -38,5 +42,6 @@ public class SpawnManager : MonoBehaviour
     public void OnPlayerDeath()
     {
         _isSpawning = false;
+
     }
 }

@@ -47,7 +47,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2bfc72aec2692ec43b5f2e9d437ae27f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _speed: 1.5
+  _speed: 3
   _randomRange: 9.5
   _startYPos: 7.3
   _endYPos: -5.3

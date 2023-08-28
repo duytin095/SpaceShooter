@@ -22,6 +22,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Transform _tripleLaserPrefab;
 
+    [SerializeField]
+    private GameObject[] _engines;
+
     private bool _isTripleShotActive = false;
     private bool _isShieldActive = false;
     private float _canFire = -1f;
@@ -111,12 +114,28 @@ public class Player : MonoBehaviour
 
         _lives--;
         _uiManager.UpdateLives(_lives);
+        PlayerHurtVisualizer();
 
         if (_lives < 1)
         {
             _spawnManager.OnPlayerDeath();
             transform.gameObject.SetActive(false);
             //Destroy(this.gameObject);
+        }
+    }
+
+    void PlayerHurtVisualizer()
+    {
+        if (_lives == 2)
+        {
+            _engines[Random.Range(0, 2)].SetActive(true);
+        }
+        else if (_lives == 1)
+        {
+            foreach (var engine in _engines)
+            {
+                engine.SetActive(true);
+            }
         }
     }
 
