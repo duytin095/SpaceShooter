@@ -16,11 +16,13 @@ public class Enemy : MonoBehaviour
     private Player _player;
 
     private Animator _anim;
+    private AudioSource _audioSource;
 
     private void Start()
     {
         _player = GameObject.Find("Player").GetComponent<Player>();
         _anim = GetComponent<Animator>();
+        _audioSource = GetComponent<AudioSource>();
 
         if (_player == null)
         {
@@ -29,6 +31,10 @@ public class Enemy : MonoBehaviour
         if (_anim == null)
         {
             Debug.LogError("Animator is NULL");
+        }
+        if (_audioSource == null)
+        {
+            Debug.LogError("AudioSource on Enemy is NULL");
         }
     }
 
@@ -50,6 +56,8 @@ public class Enemy : MonoBehaviour
             _player.AddScore(10);
             _speed = 0;
             _anim.SetTrigger("onEnemyDestroyed");
+            _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.4f);
         }else if (other.CompareTag("Player"))
         {
@@ -60,6 +68,8 @@ public class Enemy : MonoBehaviour
             }
             _speed = 0;
             _anim.SetTrigger("onEnemyDestroyed");
+            _audioSource.Play();
+            Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.4f);
         }
     }

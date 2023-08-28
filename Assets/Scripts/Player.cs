@@ -25,6 +25,9 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject[] _engines;
 
+    [SerializeField]
+    private AudioClip _fireClip;
+
     private bool _isTripleShotActive = false;
     private bool _isShieldActive = false;
     private float _canFire = -1f;
@@ -32,6 +35,7 @@ public class Player : MonoBehaviour
     private int _score;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
+    private AudioSource _audioSource;
 
     void Start()
     {
@@ -39,13 +43,22 @@ public class Player : MonoBehaviour
 
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        if( _spawnManager == null)
+        _audioSource = GameObject.Find("Player").GetComponent<AudioSource>();
+        if ( _spawnManager == null)
         {
             Debug.LogError("Spawn Manager is NULL");
         }
         if(_uiManager == null)
         {
             Debug.LogError("UI Manager is NULL");
+        }
+        if(_audioSource == null)
+        {
+            Debug.LogError("AudioSource on player is NULL");
+        }
+        else
+        {
+            _audioSource.clip = _fireClip;
         }
     }
 
@@ -102,6 +115,8 @@ public class Player : MonoBehaviour
         {
             Instantiate(_laserPrefab, laserSpawnPos, Quaternion.identity);
         }
+
+        _audioSource.Play();
     }
     public void Damage()
     {
