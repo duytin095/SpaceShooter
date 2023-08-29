@@ -13,7 +13,11 @@ public class Enemy : MonoBehaviour
     [SerializeField]
     private float _endYPos = -5.3f;
     [SerializeField]
+    private GameObject _enemyLaser;
+
     private Player _player;
+    private float _fireRate;
+    private float _canFire = -1;
 
     private Animator _anim;
     private AudioSource _audioSource;
@@ -40,6 +44,24 @@ public class Enemy : MonoBehaviour
 
     private void Update()
     {
+        CaculateMovement();
+
+        if(Time.time > _canFire)
+        {
+            _fireRate = Random.Range(3, 6);
+            _canFire = Time.time + _fireRate;
+            GameObject newEnemyLaser = Instantiate(_enemyLaser, transform.position, Quaternion.identity);
+            Laser[] enemyLasers = newEnemyLaser.GetComponentsInChildren<Laser>();
+
+            foreach (var laser in enemyLasers)
+            {
+                laser.AssignEnemyLaser();
+            }
+        }
+    }
+
+    void CaculateMovement()
+    {
         transform.Translate(_speed * Time.deltaTime * Vector3.down);
         float randomX = Random.Range(-_randomRange, _randomRange);
         if (transform.position.y < _endYPos)
@@ -50,8 +72,14 @@ public class Enemy : MonoBehaviour
 
     private void OnTriggerEnter2D(Collider2D other)
     {
+        
         if (other.CompareTag("Laser"))
         {
+            Laser laser = other.GetComponent<Laser>();
+            if(laser != null && laser.IsEnemyLaser()){
+                return;
+            }
+
             Destroy(other.gameObject);
             _player.AddScore(10);
             _speed = 0;
@@ -72,5 +100,7 @@ public class Enemy : MonoBehaviour
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.4f);
         }
+
+
     }
 }

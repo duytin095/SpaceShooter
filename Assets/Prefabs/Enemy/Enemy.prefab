@@ -52,7 +52,8 @@ MonoBehaviour:
   _randomRange: 9.5
   _startYPos: 7.3
   _endYPos: -5.3
-  _player: {fileID: 0}
+  _enemyLaser: {fileID: 8172669426823978460, guid: b73b8fd6a3282d74aa282ad26c1363cd,
+    type: 3}
 --- !u!212 &2290680155286229593
 SpriteRenderer:
   m_ObjectHideFlags: 0
