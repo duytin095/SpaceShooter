@@ -19,6 +19,10 @@ public class GameManager : MonoBehaviour
             SceneManager.LoadScene(1);
             _isGameOver = false;
         }
+        if (Input.GetKey("escape"))
+        {
+            Application.Quit();
+        }
     }
     
     public void RestartGame()
