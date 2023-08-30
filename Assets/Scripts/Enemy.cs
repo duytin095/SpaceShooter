@@ -18,6 +18,7 @@ public class Enemy : MonoBehaviour
     private Player _player;
     private float _fireRate;
     private float _canFire = -1;
+    private bool _isEnemyDestroyed;
 
     private Animator _anim;
     private AudioSource _audioSource;
@@ -46,7 +47,7 @@ public class Enemy : MonoBehaviour
     {
         CaculateMovement();
 
-        if(Time.time > _canFire)
+        if(Time.time > _canFire && !_isEnemyDestroyed)
         {
             _fireRate = Random.Range(3, 6);
             _canFire = Time.time + _fireRate;
@@ -85,6 +86,7 @@ public class Enemy : MonoBehaviour
             _speed = 0;
             _anim.SetTrigger("onEnemyDestroyed");
             _audioSource.Play();
+            _isEnemyDestroyed = true;
             Destroy(GetComponent<Collider2D>());
             Destroy(this.gameObject, 2.4f);
         }else if (other.CompareTag("Player"))
