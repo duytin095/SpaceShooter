@@ -27,6 +27,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private AudioClip _fireClip;
+    [SerializeField]
+    private AudioSource _audioSource;
 
     private bool _isTripleShotActive = false;
     private bool _isShieldActive = false;
@@ -35,15 +37,23 @@ public class Player : MonoBehaviour
     private int _score;
     private SpawnManager _spawnManager;
     private UIManager _uiManager;
-    private AudioSource _audioSource;
+    private Animator _animator;
+
+
+    private GameManager _gameManager;
 
     void Start()
     {
-        transform.position = Vector3.zero;
 
+        _animator = GetComponent<Animator>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         _spawnManager = GameObject.Find("SpawnManager").GetComponent<SpawnManager>();
         _uiManager = GameObject.Find("Canvas").GetComponent<UIManager>();
-        _audioSource = GameObject.Find("Player").GetComponent<AudioSource>();
+
+        if(_animator == null)
+        {
+            Debug.LogError("Animator on player is NULL");
+        }
         if ( _spawnManager == null)
         {
             Debug.LogError("Spawn Manager is NULL");
@@ -52,6 +62,10 @@ public class Player : MonoBehaviour
         {
             Debug.LogError("UI Manager is NULL");
         }
+        if(_gameManager == null)
+        {
+            Debug.LogError("GameManager is NULL");
+        }
         if(_audioSource == null)
         {
             Debug.LogError("AudioSource on player is NULL");
@@ -59,6 +73,11 @@ public class Player : MonoBehaviour
         else
         {
             _audioSource.clip = _fireClip;
+        }
+
+        if (!_gameManager.IsCoopMode())
+        {
+            transform.position = Vector3.zero;
         }
     }
 
@@ -86,8 +105,9 @@ public class Player : MonoBehaviour
         Vector3 direction = new Vector3(horizontalInput, verticalInput, 0);
 
         transform.Translate(_speed * Time.deltaTime * direction);
-
         transform.position = new Vector3(transform.position.x, Mathf.Clamp(transform.position.y, botPosBound, topPosBound), 0);
+
+        AnimationController(horizontalInput);
 
         if (currentPosX > rightPosBound)
         {
@@ -96,6 +116,22 @@ public class Player : MonoBehaviour
         else if (currentPosX < leftPosBound)
         {
             transform.position = new Vector3(rightPosBound, currentPosY, 0);
+        }
+    }
+
+    void AnimationController(float _horizontalInput)
+    {
+        if (_horizontalInput > 0)
+        {
+            _animator.CrossFade("PlayerTurnRight_anim", 0, 0);
+        }
+        else if (_horizontalInput < 0)
+        {
+            _animator.CrossFade("PlayerTurnLeft_anim", 0, 0);
+        }
+        else
+        {
+            _animator.CrossFade("PlayerDefault_anim", 0.3f, 0);
         }
     }
 

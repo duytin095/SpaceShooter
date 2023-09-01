@@ -4,16 +4,25 @@ using UnityEngine;
 
 public class SpawnManager : MonoBehaviour
 {
+    [SerializeField] GameObject _asteriod;
     [SerializeField] GameObject _enemyPrefab;
     [SerializeField] GameObject _enemyContainer;
     [SerializeField] GameObject[] powerups;
+
     private bool _isSpawning = false;
+
+
+    private void Start()
+    {
+        SpawnAsteroid();
+    }
 
     public void StartSpawning()
     {
         _isSpawning = true;
         StartCoroutine(SpawnEnemyRoutine());
         StartCoroutine(SpawnPowerupRountine());
+        
     }
 
     IEnumerator SpawnEnemyRoutine()
@@ -43,5 +52,10 @@ public class SpawnManager : MonoBehaviour
     {
         _isSpawning = false;
 
+    }
+    void SpawnAsteroid()
+    {
+        Vector3 spawnPos = new Vector3(0.15f, 5, 0);
+        Instantiate(_asteriod, spawnPos, Quaternion.identity);
     }
 }

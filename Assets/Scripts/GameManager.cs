@@ -6,6 +6,8 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     private bool _isGameOver;
+    [SerializeField]
+    private bool _isCoopMode;
     void Start()
     {
         
@@ -28,5 +30,9 @@ public class GameManager : MonoBehaviour
     public void RestartGame()
     {
         _isGameOver = true;
+    }
+    public bool IsCoopMode()
+    {
+        return _isCoopMode;
     }
 }
